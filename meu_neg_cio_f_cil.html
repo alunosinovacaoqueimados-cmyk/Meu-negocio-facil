@@ -1,0 +1,1448 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="h-full bg-slate-50">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meu Negócio Fácil - Gestão Inteligente para Pequenos Negócios</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#f0f7ff',
+                            100: '#e0effe',
+                            500: '#2563eb',
+                            600: '#1d4ed8',
+                            700: '#1e40af',
+                            800: '#1e3a8a',
+                            900: '#172554',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom scrollbars & smooth transitions */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 9999px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+        .fade-in {
+            animation: fadeIn 0.25s ease-out forwards;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        /* Hide scrollbars for navigation tabs */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+<body class="h-full flex flex-col font-sans text-slate-800 antialiased selection:bg-brand-500 selection:text-white">
+
+    <!-- Top Header Navigation -->
+    <header class="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <!-- Brand / Logo -->
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-700 to-brand-500 flex items-center justify-center text-white shadow-md shadow-brand-500/20">
+                        <i class="fa-solid fa-store text-lg"></i>
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <span class="font-bold text-lg text-slate-900 tracking-tight">Meu Negócio Fácil</span>
+                            <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800">
+                                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 mr-1.5 animate-pulse"></span> Ativo
+                            </span>
+                        </div>
+                        <p class="text-xs text-slate-500 hidden sm:block">Doceria Artesanal da Ana</p>
+                    </div>
+                </div>
+
+                <!-- Right Header Tools -->
+                <div class="flex items-center space-x-3">
+                    <!-- Quick Notification Badge -->
+                    <button id="btn-notifications" class="p-2 text-slate-500 hover:text-slate-700 rounded-lg hover:bg-slate-100 relative transition-colors" title="Notificações">
+                        <i class="fa-regular fa-bell text-lg"></i>
+                        <span id="notif-badge" class="absolute top-1.5 right-1.5 w-2.5 h-2.5 bg-rose-500 rounded-full border-2 border-white"></span>
+                    </button>
+                    <!-- Quick Reset Data Button -->
+                    <button onclick="resetToDefaultData()" class="p-2 text-slate-400 hover:text-rose-600 rounded-lg hover:bg-slate-100 transition-colors text-xs flex items-center gap-1" title="Restaurar Dados Demonstrativos">
+                        <i class="fa-solid fa-rotate-left"></i>
+                        <span class="hidden md:inline">Restaurar Exemplo</span>
+                    </button>
+                    <div class="h-6 w-px bg-slate-200"></div>
+                    <!-- User Profile -->
+                    <div class="flex items-center space-x-3 cursor-pointer p-1 rounded-lg hover:bg-slate-50 transition-colors">
+                        <img class="w-9 h-9 rounded-full object-cover border border-slate-200" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=150" alt="Ana Silva" onerror="this.src='https://placehold.co/100x100/1e40af/ffffff?text=AS'">
+                        <div class="hidden sm:block text-left text-xs">
+                            <p class="font-semibold text-slate-800">Ana Silva</p>
+                            <p class="text-slate-500">Gestora Pro</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Wrapper -->
+    <div class="flex-1 flex overflow-hidden">
+
+        <!-- Sidebar Navigation (Desktop) -->
+        <aside class="hidden lg:flex flex-col w-64 bg-white border-r border-slate-200 p-4 justify-between select-none">
+            <nav class="space-y-1">
+                <p class="px-3 text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Menu Principal</p>
+                <button onclick="switchTab('dashboard')" id="nav-dashboard" class="nav-item w-full flex items-center space-x-3 px-3 py-2.5 rounded-xl font-medium text-sm text-slate-600 hover:bg-slate-50 hover:text-brand-600 transition-all">
+                    <i class="fa-solid fa-chart-pie w-5 text-center text-base"></i>
+                    <span>Visão Geral</span>
+                </button>
+                <button onclick="switchTab('ia')" id="nav-ia" class="nav-item w-full flex items-center justify-between px-3 py-2.5 rounded-xl font-medium text-sm text-slate-600 hover:bg-slate-50 hover:text-brand-600 transition-all">
+                    <div class="flex items-center space-x-3">
+                        <i class="fa-solid fa-robot w-5 text-center text-base text-brand-600"></i>
+                        <span class="font-semibold text-slate-900">Assistente IA</span>
+                    </div>
+                    <span class="bg-brand-100 text-brand-700 text-xs px-2 py-0.5 rounded-full font-bold">Copiloto</span>
+                </button>
+                <button onclick="switchTab('pedidos')" id="nav-pedidos" class="nav-item w-full flex items-center justify-between px-3 py-2.5 rounded-xl font-medium text-sm text-slate-600 hover:bg-slate-50 hover:text-brand-600 transition-all">
+                    <div class="flex items-center space-x-3">
+                        <i class="fa-solid fa-box-archive w-5 text-center text-base"></i>
+                        <span>Pedidos</span>
+                    </div>
+                    <span id="badge-pedidos-count" class="bg-slate-100 text-slate-600 text-xs px-2 py-0.5 rounded-full font-medium">0</span>
+                </button>
+                <button onclick="switchTab('clientes')" id="nav-clientes" class="nav-item w-full flex items-center space-x-3 px-3 py-2.5 rounded-xl font-medium text-sm text-slate-600 hover:bg-slate-50 hover:text-brand-600 transition-all">
+                    <i class="fa-solid fa-users w-5 text-center text-base"></i>
+                    <span>Clientes</span>
+                </button>
+                <button onclick="switchTab('agenda')" id="nav-agenda" class="nav-item w-full flex items-center justify-between px-3 py-2.5 rounded-xl font-medium text-sm text-slate-600 hover:bg-slate-50 hover:text-brand-600 transition-all">
+                    <div class="flex items-center space-x-3">
+                        <i class="fa-solid fa-calendar-check w-5 text-center text-base"></i>
+                        <span>Agenda & Tarefas</span>
+                    </div>
+                    <span id="badge-tarefas-count" class="bg-amber-100 text-amber-800 text-xs px-2 py-0.5 rounded-full font-medium">0</span>
+                </button>
+                <button onclick="switchTab('financeiro')" id="nav-financeiro" class="nav-item w-full flex items-center space-x-3 px-3 py-2.5 rounded-xl font-medium text-sm text-slate-600 hover:bg-slate-50 hover:text-brand-600 transition-all">
+                    <i class="fa-solid fa-wallet w-5 text-center text-base"></i>
+                    <span>Financeiro</span>
+                </button>
+                <button onclick="switchTab('marketing')" id="nav-marketing" class="nav-item w-full flex items-center space-x-3 px-3 py-2.5 rounded-xl font-medium text-sm text-slate-600 hover:bg-slate-50 hover:text-brand-600 transition-all">
+                    <i class="fa-solid fa-bullhorn w-5 text-center text-base"></i>
+                    <span>Marketing</span>
+                </button>
+            </nav>
+
+            <!-- Bottom Assistant Shortcut Box -->
+            <div class="bg-gradient-to-br from-brand-900 to-brand-700 rounded-2xl p-4 text-white shadow-lg">
+                <div class="flex items-center gap-2 mb-2">
+                    <i class="fa-solid fa-wand-magic-sparkles text-amber-300"></i>
+                    <h4 class="font-semibold text-xs tracking-wide uppercase text-brand-100">Dica do Copiloto</h4>
+                </div>
+                <p class="text-xs text-brand-100 leading-relaxed mb-3">Envie áudios ou frases para cadastrar pedidos e tarefas sem digitar formulários!</p>
+                <button onclick="switchTab('ia')" class="w-full bg-white text-brand-900 hover:bg-brand-50 text-xs font-bold py-2 px-3 rounded-lg transition-colors shadow-sm">
+                    Usar Assistente
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content Scroll Area -->
+        <main class="flex-1 overflow-y-auto bg-slate-50 p-4 sm:p-6 lg:p-8 pb-24 lg:pb-8">
+
+            <!-- ================= SECTION: DASHBOARD ================= -->
+            <section id="tab-dashboard" class="tab-content space-y-6 fade-in">
+                <!-- Welcome Banner & IA Quick Prompt -->
+                <div class="bg-gradient-to-r from-brand-800 via-brand-700 to-indigo-800 rounded-2xl p-6 text-white shadow-xl relative overflow-hidden">
+                    <div class="absolute -right-10 -bottom-10 opacity-10 text-9xl pointer-events-none">
+                        <i class="fa-solid fa-robot"></i>
+                    </div>
+                    <div class="relative z-10 max-w-3xl">
+                        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 backdrop-blur-md text-xs font-medium text-brand-100 mb-3">
+                            <i class="fa-solid fa-sparkles text-amber-300"></i> Seu negócio sob controle
+                        </span>
+                        <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight mb-2">Olá, Ana! Vamos organizar o dia?</h1>
+                        <p class="text-sm text-brand-100 mb-5">Você tem <span id="dash-summary-count" class="font-bold text-white underline decoration-amber-400">3 pedidos para entregar</span> e <span id="dash-summary-tasks" class="font-bold text-white underline decoration-amber-400">2 tarefas prioritárias</span> hoje.</p>
+
+                        <!-- Quick IA Launcher Input -->
+                        <div class="bg-white rounded-xl p-2 flex items-center shadow-lg text-slate-800 max-w-2xl">
+                            <i class="fa-solid fa-robot text-brand-600 text-lg ml-3 mr-2"></i>
+                            <input id="dash-ia-input" type="text" placeholder="Ex: Maria encomendou 20 brigadeiros por R$80 para sábado..." class="w-full text-sm outline-none px-2 text-slate-700 placeholder-slate-400" onkeydown="if(event.key==='Enter') executeDashQuickIa()">
+                            <button onclick="executeDashQuickIa()" class="bg-brand-600 hover:bg-brand-700 text-white px-4 py-2 rounded-lg text-xs font-semibold flex items-center gap-2 transition-colors shrink-0">
+                                <span>Enviar</span>
+                                <i class="fa-solid fa-paper-plane"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Key Performance Indicators (KPI Cards) -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm flex justify-between items-start">
+                        <div>
+                            <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Faturamento Hoje</p>
+                            <h3 id="kpi-faturamento-hoje" class="text-2xl font-bold text-slate-900 mt-1">R$ 0,00</h3>
+                            <p class="text-xs text-emerald-600 font-medium mt-1 flex items-center gap-1">
+                                <i class="fa-solid fa-arrow-trend-up"></i> <span id="kpi-pedidos-hoje-count">0</span> entregas concluídas
+                            </p>
+                        </div>
+                        <div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold">
+                            <i class="fa-solid fa-coins text-lg"></i>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm flex justify-between items-start">
+                        <div>
+                            <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Entregas do Dia</p>
+                            <h3 id="kpi-entregas-pendentes" class="text-2xl font-bold text-slate-900 mt-1">0</h3>
+                            <p class="text-xs text-amber-600 font-medium mt-1">
+                                <i class="fa-regular fa-clock"></i> Requer sua atenção
+                            </p>
+                        </div>
+                        <div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center font-bold">
+                            <i class="fa-solid fa-truck-ramp-box text-lg"></i>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm flex justify-between items-start">
+                        <div>
+                            <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Tarefas Pendentes</p>
+                            <h3 id="kpi-tarefas-pendentes" class="text-2xl font-bold text-slate-900 mt-1">0</h3>
+                            <p class="text-xs text-slate-500 font-medium mt-1">
+                                Para concluir hoje
+                            </p>
+                        </div>
+                        <div class="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center font-bold">
+                            <i class="fa-solid fa-list-check text-lg"></i>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm flex justify-between items-start">
+                        <div>
+                            <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Previsão da Semana</p>
+                            <h3 id="kpi-faturamento-semanal" class="text-2xl font-bold text-brand-600 mt-1">R$ 0,00</h3>
+                            <p class="text-xs text-slate-500 font-medium mt-1">
+                                Total de vendas confirmadas
+                            </p>
+                        </div>
+                        <div class="w-10 h-10 rounded-xl bg-brand-50 text-brand-600 flex items-center justify-center font-bold">
+                            <i class="fa-solid fa-chart-line text-lg"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Two Column Dashboard Layout -->
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <!-- Column 1 & 2: Urgent Deliveries and Today's Schedule -->
+                    <div class="lg:col-span-2 space-y-6">
+                        <!-- Deliveries Today Card -->
+                        <div class="bg-white rounded-2xl border border-slate-200/80 shadow-sm p-6">
+                            <div class="flex items-center justify-between mb-4">
+                                <div class="flex items-center gap-2">
+                                    <i class="fa-solid fa-box text-brand-600"></i>
+                                    <h2 class="font-bold text-slate-900">Entregas de Hoje</h2>
+                                </div>
+                                <button onclick="switchTab('pedidos')" class="text-xs font-semibold text-brand-600 hover:text-brand-800">Ver Todos os Pedidos →</button>
+                            </div>
+                            <div id="dash-deliveries-list" class="space-y-3">
+                                <!-- Dynamic JS Injection -->
+                            </div>
+                        </div>
+
+                        <!-- Tasks Card -->
+                        <div class="bg-white rounded-2xl border border-slate-200/80 shadow-sm p-6">
+                            <div class="flex items-center justify-between mb-4">
+                                <div class="flex items-center gap-2">
+                                    <i class="fa-solid fa-check-double text-indigo-600"></i>
+                                    <h2 class="font-bold text-slate-900">Tarefas do Dia</h2>
+                                </div>
+                                <button onclick="switchTab('agenda')" class="text-xs font-semibold text-brand-600 hover:text-brand-800">Gerenciar Tarefas →</button>
+                            </div>
+                            <div id="dash-tasks-list" class="space-y-2">
+                                <!-- Dynamic JS Injection -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Column 3: Quick Finance & Recent Clients -->
+                    <div class="space-y-6">
+                        <!-- Weekly Financial Overview Card -->
+                        <div class="bg-white rounded-2xl border border-slate-200/80 shadow-sm p-6">
+                            <h2 class="font-bold text-slate-900 mb-4 flex items-center gap-2">
+                                <i class="fa-solid fa-wallet text-emerald-600"></i> Resumo Financeiro
+                            </h2>
+                            <div class="space-y-3 text-sm">
+                                <div class="flex justify-between items-center pb-2 border-b border-slate-100">
+                                    <span class="text-slate-500">Entradas (Mês)</span>
+                                    <span id="dash-fin-receita" class="font-semibold text-emerald-600">R$ 0,00</span>
+                                </div>
+                                <div class="flex justify-between items-center pb-2 border-b border-slate-100">
+                                    <span class="text-slate-500">Saídas / Despesas</span>
+                                    <span id="dash-fin-despesa" class="font-semibold text-rose-600">R$ 0,00</span>
+                                </div>
+                                <div class="flex justify-between items-center pt-1 font-bold text-base">
+                                    <span class="text-slate-800">Saldo Atual</span>
+                                    <span id="dash-fin-saldo" class="text-slate-900">R$ 0,00</span>
+                                </div>
+                            </div>
+                            <button onclick="switchTab('financeiro')" class="w-full mt-5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold py-2.5 rounded-xl transition-colors">
+                                Extrato Detalhado
+                            </button>
+                        </div>
+
+                        <!-- Active Customers Quick List -->
+                        <div class="bg-white rounded-2xl border border-slate-200/80 shadow-sm p-6">
+                            <div class="flex items-center justify-between mb-3">
+                                <h2 class="font-bold text-slate-900">Clientes Recentes</h2>
+                                <button onclick="switchTab('clientes')" class="text-xs text-brand-600 font-semibold">Ver mais</button>
+                            </div>
+                            <div id="dash-recent-clients" class="space-y-3">
+                                <!-- Dynamic JS Injection -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ================= SECTION: ASSISTENTE IA ================= -->
+            <section id="tab-ia" class="tab-content hidden space-y-6 fade-in max-w-4xl mx-auto">
+                <div class="bg-white rounded-2xl border border-slate-200/80 shadow-md flex flex-col h-[78vh]">
+                    <!-- Chat Header -->
+                    <div class="p-4 border-b border-slate-200 flex items-center justify-between bg-gradient-to-r from-brand-900 to-brand-800 text-white rounded-t-2xl">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-full bg-brand-600 flex items-center justify-center text-amber-300 shadow-md">
+                                <i class="fa-solid fa-robot text-lg"></i>
+                            </div>
+                            <div>
+                                <h2 class="font-bold text-sm sm:text-base flex items-center gap-2">
+                                    Copiloto Inteligente
+                                    <span class="bg-emerald-500/20 text-emerald-300 text-[10px] px-2 py-0.5 rounded-full font-semibold border border-emerald-500/30">Humano no Controle</span>
+                                </h2>
+                                <p class="text-xs text-brand-200">Digite ou simule um áudio do WhatsApp com seus pedidos e tarefas.</p>
+                            </div>
+                        </div>
+                        <button onclick="clearChatHistory()" class="text-xs text-brand-200 hover:text-white p-2 rounded-lg hover:bg-white/10 transition-colors" title="Limpar Conversa">
+                            <i class="fa-solid fa-trash-can"></i>
+                        </button>
+                    </div>
+
+                    <!-- Quick Suggestions Header Chips -->
+                    <div class="p-3 bg-slate-50 border-b border-slate-200 flex items-center gap-2 overflow-x-auto no-scrollbar text-xs">
+                        <span class="text-slate-400 font-semibold uppercase tracking-wider text-[10px] shrink-0">Sugestões:</span>
+                        <button onclick="sendQuickPrompt('Maria pediu 20 brigadeiros para sábado por R$80 e preciso confirmar o horário de entrega.')" class="bg-white border border-slate-200 hover:border-brand-500 text-slate-700 hover:text-brand-600 px-3 py-1.5 rounded-full shrink-0 shadow-sm transition-colors text-left">
+                            💬 "Maria pediu 20 brigadeiros por R$80 para sábado..."
+                        </button>
+                        <button onclick="sendQuickPrompt('Quais são as minhas tarefas prioritárias para hoje?')" class="bg-white border border-slate-200 hover:border-brand-500 text-slate-700 hover:text-brand-600 px-3 py-1.5 rounded-full shrink-0 shadow-sm transition-colors text-left">
+                            📅 "Quais minhas tarefas de hoje?"
+                        </button>
+                        <button onclick="sendQuickPrompt('Lançar despesa de R$ 45 com caixas de embalagem')" class="bg-white border border-slate-200 hover:border-brand-500 text-slate-700 hover:text-brand-600 px-3 py-1.5 rounded-full shrink-0 shadow-sm transition-colors text-left">
+                            💸 "Lançar despesa de R$45 com embalagens"
+                        </button>
+                    </div>
+
+                    <!-- Chat Messages Stream Area -->
+                    <div id="chat-messages" class="flex-1 p-4 overflow-y-auto space-y-4 bg-slate-50/50">
+                        <!-- Initial AI Message -->
+                        <div class="flex items-start gap-3 max-w-2xl">
+                            <div class="w-8 h-8 rounded-full bg-brand-600 text-white flex items-center justify-center shrink-0 text-xs font-bold shadow-sm">
+                                <i class="fa-solid fa-robot"></i>
+                            </div>
+                            <div class="bg-white p-4 rounded-2xl rounded-tl-none border border-slate-200 shadow-sm text-sm text-slate-800 leading-relaxed">
+                                <p class="font-semibold text-brand-700 mb-1">Olá! Sou seu Copiloto de Negócios. 👋</p>
+                                <p>Me diga o que aconteceu no seu dia de forma natural ou envie uma simulação de áudio. Eu vou ler a mensagem, propor o cadastro do cliente, pedido e tarefas, e <strong>você confirma antes de salvar!</strong></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Chat Input Area -->
+                    <div class="p-4 bg-white border-t border-slate-200 rounded-b-2xl">
+                        <form id="chat-form" onsubmit="handleChatSubmit(event)" class="flex items-center gap-2">
+                            <!-- Simulated Audio Recording Button -->
+                            <button type="button" onclick="simulateAudioRecord()" id="btn-audio-sim" class="p-3 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-xl transition-colors relative" title="Simular Envio de Áudio">
+                                <i class="fa-solid fa-microphone text-base"></i>
+                            </button>
+                            <input id="chat-input" type="text" placeholder="Ex: Carlos encomendou um bolo de chocolate por R$ 120 para amanhã..." class="flex-1 border border-slate-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500">
+                            <button type="submit" class="bg-brand-600 hover:bg-brand-700 text-white px-5 py-3 rounded-xl font-semibold text-sm transition-colors flex items-center gap-2 shadow-md shadow-brand-500/20">
+                                <span class="hidden sm:inline">Enviar</span>
+                                <i class="fa-solid fa-paper-plane"></i>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ================= SECTION: PEDIDOS ================= -->
+            <section id="tab-pedidos" class="tab-content hidden space-y-6 fade-in">
+                <!-- Orders Bar Header -->
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <div>
+                        <h1 class="text-2xl font-bold text-slate-900">Gerenciamento de Pedidos</h1>
+                        <p class="text-sm text-slate-500">Acompanhe e atualize o status dos pedidos dos seus clientes</p>
+                    </div>
+                    <button onclick="openNewOrderModal()" class="bg-brand-600 hover:bg-brand-700 text-white px-4 py-2.5 rounded-xl text-sm font-semibold flex items-center gap-2 shadow-md shadow-brand-500/20 transition-all">
+                        <i class="fa-solid fa-plus"></i> Novo Pedido
+                    </button>
+                </div>
+
+                <!-- Status Filters -->
+                <div class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1">
+                    <button onclick="filterOrders('TODOS')" class="order-filter-btn px-4 py-2 rounded-xl text-xs font-semibold bg-brand-600 text-white shadow-sm">Todos</button>
+                    <button onclick="filterOrders('PENDENTE')" class="order-filter-btn px-4 py-2 rounded-xl text-xs font-semibold bg-white border border-slate-200 text-slate-600 hover:bg-slate-50">Novo / Pendente</button>
+                    <button onclick="filterOrders('EM_PRODUCAO')" class="order-filter-btn px-4 py-2 rounded-xl text-xs font-semibold bg-white border border-slate-200 text-slate-600 hover:bg-slate-50">Em Produção</button>
+                    <button onclick="filterOrders('PRONTO')" class="order-filter-btn px-4 py-2 rounded-xl text-xs font-semibold bg-white border border-slate-200 text-slate-600 hover:bg-slate-50">Pronto / Saiu p/ Entrega</button>
+                    <button onclick="filterOrders('CONCLUIDO')" class="order-filter-btn px-4 py-2 rounded-xl text-xs font-semibold bg-white border border-slate-200 text-slate-600 hover:bg-slate-50">Entregue / Concluído</button>
+                </div>
+
+                <!-- Orders Grid List -->
+                <div id="orders-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <!-- Dynamic Orders JS -->
+                </div>
+            </section>
+
+            <!-- ================= SECTION: CLIENTES ================= -->
+            <section id="tab-clientes" class="tab-content hidden space-y-6 fade-in">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <div>
+                        <h1 class="text-2xl font-bold text-slate-900">Carteira de Clientes (CRM)</h1>
+                        <p class="text-sm text-slate-500">Histórico de compras e contato rápido via WhatsApp</p>
+                    </div>
+                    <button onclick="openNewClientModal()" class="bg-brand-600 hover:bg-brand-700 text-white px-4 py-2.5 rounded-xl text-sm font-semibold flex items-center gap-2 shadow-md shadow-brand-500/20 transition-all">
+                        <i class="fa-solid fa-user-plus"></i> Adicionar Cliente
+                    </button>
+                </div>
+
+                <!-- Client Search & Table Card -->
+                <div class="bg-white rounded-2xl border border-slate-200/80 shadow-sm overflow-hidden">
+                    <div class="p-4 border-b border-slate-200 bg-slate-50/50 flex items-center gap-3">
+                        <i class="fa-solid fa-magnifying-glass text-slate-400"></i>
+                        <input id="client-search-input" onkeyup="renderClients()" type="text" placeholder="Buscar por nome, telefone ou produto preferido..." class="w-full bg-transparent text-sm outline-none text-slate-700 placeholder-slate-400">
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-sm text-slate-600">
+                            <thead class="bg-slate-100/70 text-slate-500 uppercase text-[11px] font-bold tracking-wider">
+                                <tr>
+                                    <th class="py-3 px-4">Cliente</th>
+                                    <th class="py-3 px-4">WhatsApp</th>
+                                    <th class="py-3 px-4">Último Pedido</th>
+                                    <th class="py-3 px-4 text-center">Total Comprado</th>
+                                    <th class="py-3 px-4 text-right">Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody id="clients-table-body" class="divide-y divide-slate-100">
+                                <!-- Dynamic JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ================= SECTION: AGENDA & TAREFAS ================= -->
+            <section id="tab-agenda" class="tab-content hidden space-y-6 fade-in">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <div>
+                        <h1 class="text-2xl font-bold text-slate-900">Agenda & Lista de Tarefas</h1>
+                        <p class="text-sm text-slate-500">Organize entregas, compras de insumos e lembretes da semana</p>
+                    </div>
+                    <button onclick="openNewTaskModal()" class="bg-brand-600 hover:bg-brand-700 text-white px-4 py-2.5 rounded-xl text-sm font-semibold flex items-center gap-2 shadow-md shadow-brand-500/20 transition-all">
+                        <i class="fa-solid fa-plus"></i> Nova Tarefa
+                    </button>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <!-- Tasks List Section (2 Cols) -->
+                    <div class="lg:col-span-2 bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm space-y-4">
+                        <div class="flex items-center justify-between border-b border-slate-100 pb-4">
+                            <h2 class="font-bold text-slate-900 text-lg">Checklist de Prioridades</h2>
+                            <span id="tasks-completion-counter" class="text-xs font-semibold px-3 py-1 bg-brand-50 text-brand-700 rounded-full">0/0 concluídas</span>
+                        </div>
+                        <div id="tasks-full-list" class="space-y-3">
+                            <!-- Dynamic JS Task Render -->
+                        </div>
+                    </div>
+
+                    <!-- Mini Calendar & Summary Column -->
+                    <div class="space-y-6">
+                        <div class="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm">
+                            <h3 class="font-bold text-slate-900 mb-3 flex items-center gap-2">
+                                <i class="fa-regular fa-calendar-days text-brand-600"></i> Resumo da Semana
+                            </h3>
+                            <div class="space-y-3 text-sm" id="agenda-weekly-summary">
+                                <!-- Dynamic Weekly Items -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ================= SECTION: FINANCEIRO ================= -->
+            <section id="tab-financeiro" class="tab-content hidden space-y-6 fade-in">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <div>
+                        <h1 class="text-2xl font-bold text-slate-900">Controle Financeiro Enxuto</h1>
+                        <p class="text-sm text-slate-500">Entradas, saídas e controle de caixa sem complicação</p>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <button onclick="openFinancialModal('ENTRADA')" class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2.5 rounded-xl text-sm font-semibold flex items-center gap-2 shadow-md shadow-emerald-600/20 transition-all">
+                            <i class="fa-solid fa-arrow-down-left"></i> Receita
+                        </button>
+                        <button onclick="openFinancialModal('SAIDA')" class="bg-rose-600 hover:bg-rose-700 text-white px-4 py-2.5 rounded-xl text-sm font-semibold flex items-center gap-2 shadow-md shadow-rose-600/20 transition-all">
+                            <i class="fa-solid fa-arrow-up-right"></i> Despesa
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Financial Balance Banner -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm">
+                        <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Total Entradas (Receita)</p>
+                        <h3 id="fin-total-entradas" class="text-2xl font-bold text-emerald-600 mt-1">R$ 0,00</h3>
+                    </div>
+                    <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm">
+                        <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Total Saídas (Despesas)</p>
+                        <h3 id="fin-total-saidas" class="text-2xl font-bold text-rose-600 mt-1">R$ 0,00</h3>
+                    </div>
+                    <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm">
+                        <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Saldo Líquido</p>
+                        <h3 id="fin-saldo-liquido" class="text-2xl font-bold text-slate-900 mt-1">R$ 0,00</h3>
+                    </div>
+                </div>
+
+                <!-- Financial Transactions List -->
+                <div class="bg-white rounded-2xl border border-slate-200/80 shadow-sm p-6">
+                    <h2 class="font-bold text-slate-900 mb-4">Lançamentos Recentes</h2>
+                    <div id="financial-transactions-list" class="space-y-3">
+                        <!-- Dynamic JS -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- ================= SECTION: MARKETING ================= -->
+            <section id="tab-marketing" class="tab-content hidden space-y-6 fade-in">
+                <div>
+                    <h1 class="text-2xl font-bold text-slate-900">Gerador de Conteúdo & Marketing</h1>
+                    <p class="text-sm text-slate-500">Crie legendas para Instagram e mensagens de vendas com IA em segundos</p>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <!-- Generator Input Form -->
+                    <div class="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm space-y-4">
+                        <h2 class="font-bold text-slate-900 flex items-center gap-2">
+                            <i class="fa-solid fa-wand-magic-sparkles text-brand-600"></i> Criador de Post / Legenda
+                        </h2>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">Qual produto ou promoção quer divulgar?</label>
+                            <input id="mkt-product" type="text" placeholder="Ex: Caixas de Brigadeiros Gourmet para o Fim de Semana" class="w-full border border-slate-300 rounded-xl px-3 py-2 text-sm focus:ring-2 focus:ring-brand-500 outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">Tom de Voz</label>
+                            <select id="mkt-tone" class="w-full border border-slate-300 rounded-xl px-3 py-2 text-sm focus:ring-2 focus:ring-brand-500 outline-none">
+                                <option value="amigavel">Amigável & Acolhedor</option>
+                                <option value="promocional">Promocional / Vendas Urgente</option>
+                                <option value="elegante">Elegante / Gourmet</option>
+                            </select>
+                        </div>
+                        <button onclick="generateMarketingContent()" class="w-full bg-brand-600 hover:bg-brand-700 text-white font-semibold py-2.5 rounded-xl text-sm transition-colors shadow-md shadow-brand-500/20 flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-bolt"></i> Gerar Textos Inteligentes
+                        </button>
+                    </div>
+
+                    <!-- Generated Content Outputs -->
+                    <div class="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm space-y-4">
+                        <h2 class="font-bold text-slate-900 flex items-center justify-between">
+                            <span>Resultado Gerado</span>
+                            <span class="text-xs text-slate-400 font-normal">Pronto para copiar</span>
+                        </h2>
+                        
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Legenda para Instagram</label>
+                            <div class="relative">
+                                <textarea id="mkt-output-insta" readonly rows="4" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs text-slate-700 outline-none resize-none">Clique no botão ao lado para gerar sua legenda...</textarea>
+                                <button onclick="copyToClipboard('mkt-output-insta')" class="absolute top-2 right-2 bg-white border border-slate-200 hover:bg-slate-100 text-slate-600 p-1.5 rounded-lg text-xs" title="Copiar Texto">
+                                    <i class="fa-regular fa-copy"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Mensagem para WhatsApp / Status</label>
+                            <div class="relative">
+                                <textarea id="mkt-output-wpp" readonly rows="3" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs text-slate-700 outline-none resize-none">Gere o texto para ver a mensagem direta para clientes...</textarea>
+                                <button onclick="copyToClipboard('mkt-output-wpp')" class="absolute top-2 right-2 bg-white border border-slate-200 hover:bg-slate-100 text-slate-600 p-1.5 rounded-lg text-xs" title="Copiar Texto">
+                                    <i class="fa-regular fa-copy"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- Mobile Bottom Navigation Bar -->
+    <nav class="lg:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-slate-200 z-30 px-2 py-1 shadow-lg">
+        <div class="flex justify-around items-center text-slate-600">
+            <button onclick="switchTab('dashboard')" class="mobile-nav-item flex flex-col items-center py-1.5 px-2 text-xs font-medium text-slate-500 hover:text-brand-600">
+                <i class="fa-solid fa-chart-pie text-base mb-0.5"></i>
+                <span class="text-[10px]">Início</span>
+            </button>
+            <button onclick="switchTab('pedidos')" class="mobile-nav-item flex flex-col items-center py-1.5 px-2 text-xs font-medium text-slate-500 hover:text-brand-600">
+                <i class="fa-solid fa-box-archive text-base mb-0.5"></i>
+                <span class="text-[10px]">Pedidos</span>
+            </button>
+            <!-- Highlighted Center AI Launcher -->
+            <button onclick="switchTab('ia')" class="mobile-nav-item flex flex-col items-center p-2 -mt-4 bg-gradient-to-tr from-brand-700 to-brand-500 text-white rounded-full shadow-lg shadow-brand-500/30">
+                <i class="fa-solid fa-robot text-lg"></i>
+            </button>
+            <button onclick="switchTab('agenda')" class="mobile-nav-item flex flex-col items-center py-1.5 px-2 text-xs font-medium text-slate-500 hover:text-brand-600">
+                <i class="fa-solid fa-calendar-check text-base mb-0.5"></i>
+                <span class="text-[10px]">Agenda</span>
+            </button>
+            <button onclick="switchTab('financeiro')" class="mobile-nav-item flex flex-col items-center py-1.5 px-2 text-xs font-medium text-slate-500 hover:text-brand-600">
+                <i class="fa-solid fa-wallet text-base mb-0.5"></i>
+                <span class="text-[10px]">Caixa</span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- MODAL: Novo Pedido Manual -->
+    <div id="modal-order" class="hidden fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-xl space-y-4 fade-in">
+            <div class="flex justify-between items-center border-b pb-3 border-slate-100">
+                <h3 class="font-bold text-slate-900 text-lg">Novo Pedido</h3>
+                <button onclick="closeModal('modal-order')" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+            <form id="form-new-order" onsubmit="handleNewOrderSubmit(event)" class="space-y-3">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 mb-1">Nome do Cliente</label>
+                    <input id="input-order-client" required type="text" placeholder="Ex: Maria Silva" class="w-full border border-slate-300 rounded-xl px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-brand-500">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 mb-1">Itens do Pedido</label>
+                    <input id="input-order-items" required type="text" placeholder="Ex: 20 Brigadeiros Gourmet" class="w-full border border-slate-300 rounded-xl px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-brand-500">
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-600 mb-1">Valor Total (R$)</label>
+                        <input id="input-order-value" required type="number" step="0.01" placeholder="80.00" class="w-full border border-slate-300 rounded-xl px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-brand-500">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-600 mb-1">Data de Entrega</label>
+                        <input id="input-order-date" required type="date" class="w-full border border-slate-300 rounded-xl px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-brand-500">
+                    </div>
+                </div>
+                <div class="pt-3 flex justify-end gap-2">
+                    <button type="button" onclick="closeModal('modal-order')" class="px-4 py-2 rounded-xl text-xs font-semibold text-slate-600 hover:bg-slate-100">Cancelar</button>
+                    <button type="submit" class="px-4 py-2 rounded-xl text-xs font-semibold bg-brand-600 text-white hover:bg-brand-700">Salvar Pedido</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL: Novo Cliente -->
+    <div id="modal-client" class="hidden fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-xl space-y-4 fade-in">
+            <div class="flex justify-between items-center border-b pb-3 border-slate-100">
+                <h3 class="font-bold text-slate-900 text-lg">Adicionar Cliente</h3>
+                <button onclick="closeModal('modal-client')" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+            <form id="form-new-client" onsubmit="handleNewClientSubmit(event)" class="space-y-3">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 mb-1">Nome Completo</label>
+                    <input id="input-client-name" required type="text" placeholder="Ex: Roberto Santos" class="w-full border border-slate-300 rounded-xl px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-brand-500">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 mb-1">Telefone / WhatsApp</label>
+                    <input id="input-client-phone" required type="text" placeholder="(21) 99876-5432" class="w-full border border-slate-300 rounded-xl px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-brand-500">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 mb-1">Observações / Preferências</label>
+                    <input id="input-client-notes" type="text" placeholder="Ex: Prefere doces sem lactose" class="w-full border border-slate-300 rounded-xl px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-brand-500">
+                </div>
+                <div class="pt-3 flex justify-end gap-2">
+                    <button type="button" onclick="closeModal('modal-client')" class="px-4 py-2 rounded-xl text-xs font-semibold text-slate-600 hover:bg-slate-100">Cancelar</button>
+                    <button type="submit" class="px-4 py-2 rounded-xl text-xs font-semibold bg-brand-600 text-white hover:bg-brand-700">Cadastrar Cliente</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL: Nova Tarefa -->
+    <div id="modal-task" class="hidden fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-xl space-y-4 fade-in">
+            <div class="flex justify-between items-center border-b pb-3 border-slate-100">
+                <h3 class="font-bold text-slate-900 text-lg">Nova Tarefa</h3>
+                <button onclick="closeModal('modal-task')" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+            <form id="form-new-task" onsubmit="handleNewTaskSubmit(event)" class="space-y-3">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 mb-1">Descrição da Tarefa</label>
+                    <input id="input-task-title" required type="text" placeholder="Ex: Comprar 5 kg de leite condensado" class="w-full border border-slate-300 rounded-xl px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-brand-500">
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-600 mb-1">Data Limite</label>
+                        <input id="input-task-date" required type="date" class="w-full border border-slate-300 rounded-xl px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-brand-500">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-600 mb-1">Prioridade</label>
+                        <select id="input-task-priority" class="w-full border border-slate-300 rounded-xl px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-brand-500">
+                            <option value="ALTA">Alta</option>
+                            <option value="MEDIA" selected>Média</option>
+                            <option value="BAIXA">Baixa</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="pt-3 flex justify-end gap-2">
+                    <button type="button" onclick="closeModal('modal-task')" class="px-4 py-2 rounded-xl text-xs font-semibold text-slate-600 hover:bg-slate-100">Cancelar</button>
+                    <button type="submit" class="px-4 py-2 rounded-xl text-xs font-semibold bg-brand-600 text-white hover:bg-brand-700">Criar Tarefa</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Javascript Application Logic -->
+    <script>
+        /* Global App State */
+        const APP_STORAGE_KEY = 'MEU_NEGOCIO_FACIL_DB_V1';
+
+        const defaultData = {
+            clientes: [
+                { id: 'cli-1', name: 'Maria Silva', phone: '(21) 98765-4321', totalSpent: 240.00, lastOrder: '2026-10-04' },
+                { id: 'cli-2', name: 'João Pereira', phone: '(21) 99123-8877', totalSpent: 120.00, lastOrder: '2026-10-02' },
+                { id: 'cli-3', name: 'Carla Mendes', phone: '(21) 97711-2233', totalSpent: 350.00, lastOrder: '2026-09-28' }
+            ],
+            pedidos: [
+                { id: 'ped-1', clientName: 'Maria Silva', items: '20 Brigadeiros Gourmet', value: 80.00, date: getTodayISO(), status: 'PENDENTE' },
+                { id: 'ped-2', clientName: 'João Pereira', items: 'Bolo Vulpino de Morango', value: 120.00, date: getTodayISO(), status: 'EM_PRODUCAO' },
+                { id: 'ped-3', clientName: 'Carla Mendes', items: '15 Cupcakes de Churros', value: 105.00, date: getTodayISO(), status: 'PRONTO' }
+            ],
+            tarefas: [
+                { id: 'tar-1', title: 'Confirmar horário de entrega com Maria', date: getTodayISO(), priority: 'ALTA', done: false },
+                { id: 'tar-2', title: 'Comprar caixas de embalagem e fitas', date: getTodayISO(), priority: 'MEDIA', done: false },
+                { id: 'tar-3', title: 'Enviar tabela de preços atualizada para Carla', date: '2026-10-08', priority: 'BAIXA', done: true }
+            ],
+            financeiro: [
+                { id: 'fin-1', description: 'Venda Pedido #ped-3 (Carla)', value: 105.00, type: 'ENTRADA', date: getTodayISO(), category: 'Venda' },
+                { id: 'fin-2', description: 'Compra Leite Condensado & Chocolate', value: 48.50, type: 'SAIDA', date: getTodayISO(), category: 'Insumos' }
+            ]
+        };
+
+        let state = loadState();
+
+        function getTodayISO() {
+            return new Date().toISOString().split('T')[0];
+        }
+
+        function loadState() {
+            const saved = localStorage.getItem(APP_STORAGE_KEY);
+            if (saved) {
+                try {
+                    return JSON.parse(saved);
+                } catch (e) {
+                    console.error("Erro ao carregar dados salvos:", e);
+                }
+            }
+            return defaultData;
+        }
+
+        function saveState() {
+            localStorage.setItem(APP_STORAGE_KEY, JSON.stringify(state));
+            renderAllViews();
+        }
+
+        function resetToDefaultData() {
+            if (confirm("Deseja restaurar os dados de exemplo da demonstração?")) {
+                state = JSON.parse(JSON.stringify(defaultData));
+                saveState();
+            }
+        }
+
+        /* View Switching Logic */
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.nav-item').forEach(el => {
+                el.classList.remove('bg-brand-50', 'text-brand-600', 'font-bold');
+            });
+
+            const activeTab = document.getElementById(`tab-${tabId}`);
+            if (activeTab) {
+                activeTab.classList.remove('hidden');
+            }
+
+            const activeNav = document.getElementById(`nav-${tabId}`);
+            if (activeNav) {
+                activeNav.classList.add('bg-brand-50', 'text-brand-600', 'font-bold');
+            }
+
+            // Scroll to top
+            window.scrollTo(0,0);
+        }
+
+        /* Global Notification Toasts */
+        function showNotification(message, type = 'success') {
+            const toast = document.createElement('div');
+            toast.className = `fixed bottom-20 right-4 z-50 px-4 py-3 rounded-xl shadow-lg text-xs font-bold text-white flex items-center gap-2 fade-in ${type === 'success' ? 'bg-emerald-600' : 'bg-brand-600'}`;
+            toast.innerHTML = `<i class="fa-solid fa-circle-check"></i> ${message}`;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 3500);
+        }
+
+        /* IA Assistant logic with Human-in-the-Loop Cards */
+        function executeDashQuickIa() {
+            const input = document.getElementById('dash-ia-input');
+            const val = input.value.trim();
+            if (!val) return;
+
+            switchTab('ia');
+            processUserIaInput(val);
+            input.value = '';
+        }
+
+        function sendQuickPrompt(promptText) {
+            switchTab('ia');
+            processUserIaInput(promptText);
+        }
+
+        function handleChatSubmit(e) {
+            e.preventDefault();
+            const input = document.getElementById('chat-input');
+            const val = input.value.trim();
+            if (!val) return;
+
+            processUserIaInput(val);
+            input.value = '';
+        }
+
+        function simulateAudioRecord() {
+            const sampleAudios = [
+                "Maria pediu 20 brigadeiros para sábado por R$80 e preciso confirmar o horário de entrega com ela.",
+                "Carlos quer encomendar 1 bolo de cenoura por R$ 60 para amanhã.",
+                "Lançar despesa de R$ 35 com caixas de transporte compradas hoje."
+            ];
+            const randomSample = sampleAudios[Math.floor(Math.random() * sampleAudios.length)];
+            
+            const btn = document.getElementById('btn-audio-sim');
+            btn.classList.add('bg-rose-100', 'text-rose-600', 'animate-pulse');
+            btn.innerHTML = '<i class="fa-solid fa-waveform"></i> Gravando...';
+
+            setTimeout(() => {
+                btn.classList.remove('bg-rose-100', 'text-rose-600', 'animate-pulse');
+                btn.innerHTML = '<i class="fa-solid fa-microphone text-base"></i>';
+                processUserIaInput(randomSample, true);
+            }, 1200);
+        }
+
+        function processUserIaInput(text, isAudio = false) {
+            const container = document.getElementById('chat-messages');
+
+            // Render User Bubble
+            const userMsg = document.createElement('div');
+            userMsg.className = "flex items-start gap-3 justify-end fade-in";
+            userMsg.innerHTML = `
+                <div class="bg-brand-600 text-white p-3.5 rounded-2xl rounded-tr-none shadow-sm text-sm max-w-xl">
+                    ${isAudio ? '<span class="text-xs bg-brand-700/60 px-2 py-0.5 rounded mr-1 font-semibold"><i class="fa-solid fa-microphone"></i> Áudio Transcrito</span>' : ''}
+                    ${text}
+                </div>
+            `;
+            container.appendChild(userMsg);
+            container.scrollTop = container.scrollHeight;
+
+            // Simulate Processing Loading
+            const loadingMsg = document.createElement('div');
+            loadingMsg.id = 'ai-loading';
+            loadingMsg.className = "flex items-center gap-2 text-xs text-slate-400 p-2 fade-in";
+            loadingMsg.innerHTML = '<i class="fa-solid fa-circle-notch animate-spin text-brand-600"></i> Copiloto analisando intenção e preparando ações...';
+            container.appendChild(loadingMsg);
+            container.scrollTop = container.scrollHeight;
+
+            setTimeout(() => {
+                const loader = document.getElementById('ai-loading');
+                if (loader) loader.remove();
+
+                parseAndGenerateProposalCard(text, container);
+            }, 900);
+        }
+
+        function parseAndGenerateProposalCard(text, container) {
+            // Smart Parsing heuristics for demo
+            const lower = text.toLowerCase();
+
+            let proposedClient = "Maria Silva";
+            if (lower.includes("carlos")) proposedClient = "Carlos Eduardo";
+            if (lower.includes("joana")) proposedClient = "Joana Lima";
+
+            let proposedItem = "Pedido Especial";
+            let proposedValue = 80.00;
+
+            if (lower.includes("brigadeiro")) proposedItem = "20 Brigadeiros Gourmet";
+            if (lower.includes("bolo")) { proposedItem = "Bolo Especial artesanal"; proposedValue = 120.00; }
+            if (lower.includes("cupcake")) proposedItem = "Caixa de Cupcakes";
+
+            // Extract numeric value if written
+            const matchValue = text.match(/r\$\s*(\d+)/i) || text.match(/(\d+)\s*reais/i);
+            if (matchValue && matchValue[1]) {
+                proposedValue = parseFloat(matchValue[1]);
+            }
+
+            let proposedTask = `Confirmar detalhes do pedido com ${proposedClient}`;
+            if (lower.includes("horário")) proposedTask = `Confirmar horário de entrega com ${proposedClient}`;
+            if (lower.includes("embalagem") || lower.includes("insumo") || lower.includes("despesa")) {
+                proposedTask = `Conferir notas fiscais e estoque de insumos`;
+            }
+
+            const proposalId = 'prop-' + Date.now();
+
+            const aiResponse = document.createElement('div');
+            aiResponse.className = "flex items-start gap-3 max-w-2xl fade-in";
+            aiResponse.innerHTML = `
+                <div class="w-8 h-8 rounded-full bg-brand-600 text-white flex items-center justify-center shrink-0 text-xs font-bold shadow-sm">
+                    <i class="fa-solid fa-robot"></i>
+                </div>
+                <div class="bg-white p-4 rounded-2xl rounded-tl-none border border-slate-200 shadow-md text-sm text-slate-800 space-y-3">
+                    <p class="font-semibold text-brand-700">Entendi! Organizei as seguintes ações recomendadas para você:</p>
+                    
+                    <div class="bg-slate-50 border border-slate-200/80 rounded-xl p-3 space-y-2 text-xs">
+                        <div class="flex items-center gap-2 font-bold text-slate-800">
+                            <i class="fa-solid fa-user-check text-brand-600"></i> Cliente: <span class="text-slate-900">${proposedClient}</span>
+                        </div>
+                        <div class="flex items-center gap-2 font-bold text-slate-800">
+                            <i class="fa-solid fa-box text-emerald-600"></i> Pedido: <span class="text-slate-900">${proposedItem} (R$ ${proposedValue.toFixed(2)})</span>
+                        </div>
+                        <div class="flex items-center gap-2 font-bold text-slate-800">
+                            <i class="fa-solid fa-list-check text-indigo-600"></i> Tarefa Gerada: <span class="text-slate-900 font-normal">"${proposedTask}"</span>
+                        </div>
+                    </div>
+
+                    <p class="text-xs text-slate-500">Deseja que eu confirme esses registros automaticamente na sua plataforma?</p>
+
+                    <div id="${proposalId}-actions" class="flex items-center gap-2 pt-1">
+                        <button onclick="confirmIaProposal('${proposalId}', '${proposedClient}', '${proposedItem}', ${proposedValue}, '${proposedTask}')" class="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-xs px-4 py-2 rounded-lg flex items-center gap-1.5 shadow-sm transition-colors">
+                            <i class="fa-solid fa-circle-check"></i> Confirmar e Registrar
+                        </button>
+                        <button onclick="cancelIaProposal('${proposalId}')" class="bg-slate-100 hover:bg-slate-200 text-slate-600 text-xs px-3 py-2 rounded-lg transition-colors">
+                            Ajustar / Cancelar
+                        </button>
+                    </div>
+                </div>
+            `;
+
+            container.appendChild(aiResponse);
+            container.scrollTop = container.scrollHeight;
+        }
+
+        function confirmIaProposal(propId, clientName, items, value, taskTitle) {
+            // 1. Check or add client
+            let existingClient = state.clientes.find(c => c.name.toLowerCase() === clientName.toLowerCase());
+            if (!existingClient) {
+                state.clientes.push({
+                    id: 'cli-' + Date.now(),
+                    name: clientName,
+                    phone: '(21) 99000-0000',
+                    totalSpent: value,
+                    lastOrder: getTodayISO()
+                });
+            } else {
+                existingClient.totalSpent += value;
+                existingClient.lastOrder = getTodayISO();
+            }
+
+            // 2. Create Order
+            const newOrder = {
+                id: 'ped-' + Date.now(),
+                clientName: clientName,
+                items: items,
+                value: value,
+                date: getTodayISO(),
+                status: 'PENDENTE'
+            };
+            state.pedidos.unshift(newOrder);
+
+            // 3. Create Task
+            state.tarefas.unshift({
+                id: 'tar-' + Date.now(),
+                title: taskTitle,
+                date: getTodayISO(),
+                priority: 'ALTA',
+                done: false
+            });
+
+            // 4. Record Expected Revenue in Finance
+            state.financeiro.unshift({
+                id: 'fin-' + Date.now(),
+                description: `Previsão Pedido (${clientName})`,
+                value: value,
+                type: 'ENTRADA',
+                date: getTodayISO(),
+                category: 'Venda'
+            });
+
+            saveState();
+
+            // Update UI Card Status
+            const actionsDiv = document.getElementById(`${propId}-actions`);
+            if (actionsDiv) {
+                actionsDiv.innerHTML = `
+                    <div class="inline-flex items-center gap-1.5 text-xs font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 px-3 py-1.5 rounded-lg">
+                        <i class="fa-solid fa-check"></i> Pedido, Cliente e Tarefa Registrados com Sucesso!
+                    </div>
+                `;
+            }
+
+            showNotification('Operação executada e integrada à plataforma!');
+        }
+
+        function cancelIaProposal(propId) {
+            const actionsDiv = document.getElementById(`${propId}-actions`);
+            if (actionsDiv) {
+                actionsDiv.innerHTML = `<span class="text-xs text-slate-400 italic">Proposta ignorada pelo usuário.</span>`;
+            }
+        }
+
+        function clearChatHistory() {
+            const container = document.getElementById('chat-messages');
+            container.innerHTML = `
+                <div class="flex items-start gap-3 max-w-2xl">
+                    <div class="w-8 h-8 rounded-full bg-brand-600 text-white flex items-center justify-center shrink-0 text-xs font-bold shadow-sm">
+                        <i class="fa-solid fa-robot"></i>
+                    </div>
+                    <div class="bg-white p-4 rounded-2xl rounded-tl-none border border-slate-200 shadow-sm text-sm text-slate-800 leading-relaxed">
+                        <p class="font-semibold text-brand-700 mb-1">Conversa reiniciada.</p>
+                        <p>Estou pronto para organizar suas novas mensagens!</p>
+                    </div>
+                </div>
+            `;
+        }
+
+        /* Render All Reactive Views */
+        function renderAllViews() {
+            renderDashboard();
+            renderOrders();
+            renderClients();
+            renderTasks();
+            renderFinance();
+        }
+
+        /* 1. Dashboard Render */
+        function renderDashboard() {
+            // Faturamento Hoje
+            const hoje = getTodayISO();
+            const vendasHoje = state.pedidos.filter(p => p.date === hoje);
+            const totalFaturadoHoje = vendasHoje.reduce((acc, curr) => acc + curr.value, 0);
+            
+            document.getElementById('kpi-faturamento-hoje').innerText = `R$ ${totalFaturadoHoje.toFixed(2)}`;
+            document.getElementById('kpi-pedidos-hoje-count').innerText = vendasHoje.length;
+
+            // Entregas Pendentes
+            const pendentes = state.pedidos.filter(p => p.status !== 'CONCLUIDO');
+            document.getElementById('kpi-entregas-pendentes').innerText = pendentes.length;
+
+            // Tarefas Pendentes
+            const tarefasPendentes = state.tarefas.filter(t => !t.done);
+            document.getElementById('kpi-tarefas-pendentes').innerText = tarefasPendentes.length;
+
+            // Previsão Semanal
+            const totalSemanal = state.pedidos.reduce((acc, curr) => acc + curr.value, 0);
+            document.getElementById('kpi-faturamento-semanal').innerText = `R$ ${totalSemanal.toFixed(2)}`;
+
+            // Badges
+            document.getElementById('badge-pedidos-count').innerText = pendentes.length;
+            document.getElementById('badge-tarefas-count').innerText = tarefasPendentes.length;
+
+            // Dashboard Deliveries List
+            const devContainer = document.getElementById('dash-deliveries-list');
+            if (state.pedidos.length === 0) {
+                devContainer.innerHTML = `<p class="text-xs text-slate-400 py-2">Nenhum pedido agendado.</p>`;
+            } else {
+                devContainer.innerHTML = state.pedidos.slice(0, 3).map(p => `
+                    <div class="p-3 bg-slate-50 rounded-xl border border-slate-200/60 flex items-center justify-between text-xs">
+                        <div>
+                            <p class="font-bold text-slate-800">${p.clientName}</p>
+                            <p class="text-slate-500">${p.items}</p>
+                        </div>
+                        <div class="text-right">
+                            <span class="font-bold text-slate-900 block">R$ ${p.value.toFixed(2)}</span>
+                            <span class="inline-block px-2 py-0.5 rounded-full text-[10px] font-semibold ${getStatusBadgeClass(p.status)}">${p.status}</span>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            // Dashboard Tasks List
+            const taskContainer = document.getElementById('dash-tasks-list');
+            if (state.tarefas.length === 0) {
+                taskContainer.innerHTML = `<p class="text-xs text-slate-400 py-2">Nenhuma tarefa pendente.</p>`;
+            } else {
+                taskContainer.innerHTML = state.tarefas.slice(0, 3).map(t => `
+                    <div class="flex items-center justify-between p-2.5 rounded-xl border border-slate-100 hover:bg-slate-50 text-xs">
+                        <label class="flex items-center gap-2 cursor-pointer">
+                            <input type="checkbox" ${t.done ? 'checked' : ''} onchange="toggleTaskDone('${t.id}')" class="rounded text-brand-600 focus:ring-brand-500 w-4 h-4">
+                            <span class="${t.done ? 'line-through text-slate-400' : 'text-slate-700 font-medium'}">${t.title}</span>
+                        </label>
+                        <span class="text-[10px] font-bold px-2 py-0.5 rounded ${t.priority === 'ALTA' ? 'bg-rose-100 text-rose-700' : 'bg-slate-100 text-slate-600'}">${t.priority}</span>
+                    </div>
+                `).join('');
+            }
+
+            // Dashboard Finance Quick
+            const entradas = state.financeiro.filter(f => f.type === 'ENTRADA').reduce((a,b) => a + b.value, 0);
+            const saidas = state.financeiro.filter(f => f.type === 'SAIDA').reduce((a,b) => a + b.value, 0);
+            document.getElementById('dash-fin-receita').innerText = `R$ ${entradas.toFixed(2)}`;
+            document.getElementById('dash-fin-despesa').innerText = `R$ ${saidas.toFixed(2)}`;
+            document.getElementById('dash-fin-saldo').innerText = `R$ ${(entradas - saidas).toFixed(2)}`;
+
+            // Dashboard Recent Clients
+            const recentClientsDiv = document.getElementById('dash-recent-clients');
+            recentClientsDiv.innerHTML = state.clientes.slice(0, 3).map(c => `
+                <div class="flex items-center justify-between text-xs pb-2 border-b border-slate-100 last:border-0">
+                    <div>
+                        <p class="font-bold text-slate-800">${c.name}</p>
+                        <p class="text-slate-400">${c.phone}</p>
+                    </div>
+                    <span class="font-semibold text-emerald-600">R$ ${c.totalSpent.toFixed(2)}</span>
+                </div>
+            `).join('');
+        }
+
+        /* Helper Badge Class */
+        function getStatusBadgeClass(status) {
+            switch(status) {
+                case 'PENDENTE': return 'bg-amber-100 text-amber-800';
+                case 'EM_PRODUCAO': return 'bg-blue-100 text-blue-800';
+                case 'PRONTO': return 'bg-indigo-100 text-indigo-800';
+                case 'CONCLUIDO': return 'bg-emerald-100 text-emerald-800';
+                default: return 'bg-slate-100 text-slate-700';
+            }
+        }
+
+        /* 2. Orders Module */
+        let currentOrderFilter = 'TODOS';
+
+        function filterOrders(status) {
+            currentOrderFilter = status;
+            renderOrders();
+        }
+
+        function renderOrders() {
+            const container = document.getElementById('orders-container');
+            let filtered = state.pedidos;
+            if (currentOrderFilter !== 'TODOS') {
+                filtered = state.pedidos.filter(p => p.status === currentOrderFilter);
+            }
+
+            if (filtered.length === 0) {
+                container.innerHTML = `<div class="col-span-full py-12 text-center text-slate-400 text-sm">Nenhum pedido encontrado.</div>`;
+                return;
+            }
+
+            container.innerHTML = filtered.map(p => `
+                <div class="bg-white rounded-2xl border border-slate-200/80 shadow-sm p-5 space-y-3 hover:shadow-md transition-shadow">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <span class="text-[10px] font-bold text-slate-400 tracking-wider uppercase">Pedido #${p.id.slice(-4)}</span>
+                            <h3 class="font-bold text-slate-900 text-base">${p.clientName}</h3>
+                        </div>
+                        <span class="px-2.5 py-1 rounded-full text-xs font-bold ${getStatusBadgeClass(p.status)}">${p.status}</span>
+                    </div>
+
+                    <p class="text-xs text-slate-600 bg-slate-50 p-2.5 rounded-xl border border-slate-100">${p.items}</p>
+
+                    <div class="flex justify-between items-center text-xs">
+                        <span class="text-slate-400"><i class="fa-regular fa-calendar"></i> Entrega: ${p.date}</span>
+                        <span class="font-extrabold text-slate-900 text-sm">R$ ${p.value.toFixed(2)}</span>
+                    </div>
+
+                    <div class="pt-2 border-t border-slate-100 flex justify-between items-center text-xs">
+                        <label class="text-slate-500 font-semibold text-[11px]">Mudar Status:</label>
+                        <select onchange="updateOrderStatus('${p.id}', this.value)" class="border border-slate-200 rounded-lg text-xs p-1 outline-none font-medium bg-slate-50">
+                            <option value="PENDENTE" ${p.status==='PENDENTE'?'selected':''}>Pendente</option>
+                            <option value="EM_PRODUCAO" ${p.status==='EM_PRODUCAO'?'selected':''}>Em Produção</option>
+                            <option value="PRONTO" ${p.status==='PRONTO'?'selected':''}>Pronto</option>
+                            <option value="CONCLUIDO" ${p.status==='CONCLUIDO'?'selected':''}>Entregue</option>
+                        </select>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function updateOrderStatus(id, newStatus) {
+            const p = state.pedidos.find(item => item.id === id);
+            if (p) {
+                p.status = newStatus;
+                saveState();
+                showNotification('Status do pedido atualizado!');
+            }
+        }
+
+        /* 3. Clients Module */
+        function renderClients() {
+            const table = document.getElementById('clients-table-body');
+            const search = (document.getElementById('client-search-input')?.value || '').toLowerCase();
+
+            const filtered = state.clientes.filter(c => 
+                c.name.toLowerCase().includes(search) || 
+                c.phone.toLowerCase().includes(search)
+            );
+
+            if (filtered.length === 0) {
+                table.innerHTML = `<tr><td colspan="5" class="py-8 text-center text-slate-400 text-xs">Nenhum cliente cadastrado.</td></tr>`;
+                return;
+            }
+
+            table.innerHTML = filtered.map(c => `
+                <tr class="hover:bg-slate-50/80 transition-colors">
+                    <td class="py-3 px-4 font-semibold text-slate-800">${c.name}</td>
+                    <td class="py-3 px-4 text-slate-500">${c.phone}</td>
+                    <td class="py-3 px-4 text-slate-500 text-xs">${c.lastOrder || 'N/A'}</td>
+                    <td class="py-3 px-4 font-bold text-slate-900 text-center">R$ ${c.totalSpent.toFixed(2)}</td>
+                    <td class="py-3 px-4 text-right">
+                        <a href="https://wa.me/55${c.phone.replace(/\D/g,'')}" target="_blank" class="inline-flex items-center gap-1 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 font-semibold px-2.5 py-1 rounded-lg text-xs transition-colors">
+                            <i class="fa-brands fa-whatsapp text-sm"></i> Whats
+                        </a>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        /* 4. Tasks & Agenda Module */
+        function renderTasks() {
+            const container = document.getElementById('tasks-full-list');
+            const counter = document.getElementById('tasks-completion-counter');
+
+            const completed = state.tarefas.filter(t => t.done).length;
+            counter.innerText = `${completed}/${state.tarefas.length} concluídas`;
+
+            if (state.tarefas.length === 0) {
+                container.innerHTML = `<p class="text-slate-400 text-xs py-4">Nenhuma tarefa criada.</p>`;
+                return;
+            }
+
+            container.innerHTML = state.tarefas.map(t => `
+                <div class="p-3 rounded-xl border ${t.done ? 'bg-slate-50 border-slate-200/60 opacity-60' : 'bg-white border-slate-200'} flex items-center justify-between text-xs shadow-sm">
+                    <label class="flex items-center gap-3 cursor-pointer">
+                        <input type="checkbox" ${t.done ? 'checked' : ''} onchange="toggleTaskDone('${t.id}')" class="w-4 h-4 rounded text-brand-600 focus:ring-brand-500">
+                        <span class="${t.done ? 'line-through text-slate-400' : 'font-semibold text-slate-800'} text-sm">${t.title}</span>
+                    </label>
+                    <div class="flex items-center gap-3">
+                        <span class="text-slate-400"><i class="fa-regular fa-clock"></i> ${t.date}</span>
+                        <span class="px-2 py-0.5 rounded font-bold text-[10px] ${t.priority === 'ALTA' ? 'bg-rose-100 text-rose-700' : 'bg-slate-100 text-slate-600'}">${t.priority}</span>
+                        <button onclick="deleteTask('${t.id}')" class="text-slate-300 hover:text-rose-600 p-1"><i class="fa-solid fa-trash-can"></i></button>
+                    </div>
+                </div>
+            `).join('');
+
+            // Agenda Weekly Summary
+            const agendaWeekly = document.getElementById('agenda-weekly-summary');
+            agendaWeekly.innerHTML = state.pedidos.map(p => `
+                <div class="flex items-center justify-between p-2 rounded-lg bg-slate-50 border border-slate-100 text-xs">
+                    <div>
+                        <p class="font-bold text-slate-800">${p.clientName}</p>
+                        <p class="text-slate-500 text-[11px]">${p.items}</p>
+                    </div>
+                    <span class="font-semibold text-brand-600">${p.date}</span>
+                </div>
+            `).join('');
+        }
+
+        function toggleTaskDone(id) {
+            const task = state.tarefas.find(t => t.id === id);
+            if (task) {
+                task.done = !task.done;
+                saveState();
+            }
+        }
+
+        function deleteTask(id) {
+            state.tarefas = state.tarefas.filter(t => t.id !== id);
+            saveState();
+        }
+
+        /* 5. Finance Module */
+        function renderFinance() {
+            const list = document.getElementById('financial-transactions-list');
+            const entradas = state.financeiro.filter(f => f.type === 'ENTRADA').reduce((a,b) => a + b.value, 0);
+            const saidas = state.financeiro.filter(f => f.type === 'SAIDA').reduce((a,b) => a + b.value, 0);
+
+            document.getElementById('fin-total-entradas').innerText = `R$ ${entradas.toFixed(2)}`;
+            document.getElementById('fin-total-saidas').innerText = `R$ ${saidas.toFixed(2)}`;
+            document.getElementById('fin-saldo-liquido').innerText = `R$ ${(entradas - saidas).toFixed(2)}`;
+
+            if (state.financeiro.length === 0) {
+                list.innerHTML = `<p class="text-slate-400 text-xs py-4">Nenhum lançamento no caixa.</p>`;
+                return;
+            }
+
+            list.innerHTML = state.financeiro.map(f => `
+                <div class="p-3 rounded-xl bg-slate-50 border border-slate-200/60 flex items-center justify-between text-xs">
+                    <div class="flex items-center gap-3">
+                        <div class="w-8 h-8 rounded-full flex items-center justify-center font-bold ${f.type === 'ENTRADA' ? 'bg-emerald-100 text-emerald-700' : 'bg-rose-100 text-rose-700'}">
+                            <i class="fa-solid ${f.type === 'ENTRADA' ? 'fa-arrow-down-left' : 'fa-arrow-up-right'}"></i>
+                        </div>
+                        <div>
+                            <p class="font-bold text-slate-800">${f.description}</p>
+                            <p class="text-slate-400 text-[10px]">${f.category} • ${f.date}</p>
+                        </div>
+                    </div>
+                    <span class="font-extrabold text-sm ${f.type === 'ENTRADA' ? 'text-emerald-600' : 'text-rose-600'}">
+                        ${f.type === 'ENTRADA' ? '+' : '-'} R$ ${f.value.toFixed(2)}
+                    </span>
+                </div>
+            `).join('');
+        }
+
+        /* Form Submit Handlers & Modals */
+        function openNewOrderModal() { document.getElementById('modal-order').classList.remove('hidden'); }
+        function openNewClientModal() { document.getElementById('modal-client').classList.remove('hidden'); }
+        function openNewTaskModal() { document.getElementById('modal-task').classList.remove('hidden'); }
+
+        function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
+
+        function handleNewOrderSubmit(e) {
+            e.preventDefault();
+            const client = document.getElementById('input-order-client').value;
+            const items = document.getElementById('input-order-items').value;
+            const value = parseFloat(document.getElementById('input-order-value').value);
+            const date = document.getElementById('input-order-date').value;
+
+            state.pedidos.unshift({
+                id: 'ped-' + Date.now(),
+                clientName: client,
+                items: items,
+                value: value,
+                date: date,
+                status: 'PENDENTE'
+            });
+
+            saveState();
+            closeModal('modal-order');
+            showNotification('Pedido cadastrado!');
+            e.target.reset();
+        }
+
+        function handleNewClientSubmit(e) {
+            e.preventDefault();
+            const name = document.getElementById('input-client-name').value;
+            const phone = document.getElementById('input-client-phone').value;
+
+            state.clientes.unshift({
+                id: 'cli-' + Date.now(),
+                name: name,
+                phone: phone,
+                totalSpent: 0,
+                lastOrder: 'Sem pedidos'
+            });
+
+            saveState();
+            closeModal('modal-client');
+            showNotification('Cliente cadastrado com sucesso!');
+            e.target.reset();
+        }
+
+        function handleNewTaskSubmit(e) {
+            e.preventDefault();
+            const title = document.getElementById('input-task-title').value;
+            const date = document.getElementById('input-task-date').value;
+            const priority = document.getElementById('input-task-priority').value;
+
+            state.tarefas.unshift({
+                id: 'tar-' + Date.now(),
+                title: title,
+                date: date,
+                priority: priority,
+                done: false
+            });
+
+            saveState();
+            closeModal('modal-task');
+            showNotification('Nova tarefa adicionada!');
+            e.target.reset();
+        }
+
+        function openFinancialModal(type) {
+            const desc = prompt(type === 'ENTRADA' ? "Descrição da Receita:" : "Descrição da Despesa:");
+            if (!desc) return;
+            const valStr = prompt("Valor em R$:");
+            if (!valStr) return;
+            const val = parseFloat(valStr);
+
+            state.financeiro.unshift({
+                id: 'fin-' + Date.now(),
+                description: desc,
+                value: isNaN(val) ? 0 : val,
+                type: type,
+                date: getTodayISO(),
+                category: type === 'ENTRADA' ? 'Venda Direct' : 'Despesa Operacional'
+            });
+
+            saveState();
+            showNotification('Lançamento financeiro efetuado!');
+        }
+
+        /* Marketing Generator Logic */
+        function generateMarketingContent() {
+            const product = document.getElementById('mkt-product').value || 'Doces Artesanais Gourmet';
+            const tone = document.getElementById('mkt-tone').value;
+
+            let insta = "";
+            let wpp = "";
+
+            if (tone === 'amigavel') {
+                insta = `✨ Feito com amor para adoçar o seu dia! Nossos ${product} estão saindo quentinhos por aqui. Peça o seu pelo link da bio! ❤️ #DoceArtesanal #FeitoComAmor`;
+                wpp = `Olá! Tudo bem? Passando para avisar que preparamos ${product} fresquinhos hoje. Quer garantir o seu para o fim de semana? 😊`;
+            } else if (tone === 'promocional') {
+                insta = `🚨 OFERTA ESPECIAL DA SEMANA! Garanta já o seu ${product} com desconto exclusivo para os primeiros pedidos. Clique no link da bio! 🔥`;
+                wpp = `Oi! Promoção relâmpago de ${product} hoje com condições especiais! Quer dar uma olhadinha no cardápio? 🚀`;
+            } else {
+                insta = `A combinação perfeita de sofisticação e sabor incomparável. Descubra a experiência dos nossos ${product}. Link na bio. 🥂✨`;
+                wpp = `Olá! Apresentamos nossa seleção exclusiva de ${product} para momentos especiais. Gostaria de receber nosso catálogo digital? ✨`;
+            }
+
+            document.getElementById('mkt-output-insta').value = insta;
+            document.getElementById('mkt-output-wpp').value = wpp;
+            showNotification('Textos de marketing gerados!');
+        }
+
+        function copyToClipboard(elementId) {
+            const textarea = document.getElementById(elementId);
+            textarea.select();
+            document.execCommand('copy');
+            showNotification('Texto copiado para a área de transferência!');
+        }
+
+        /* Initial App Startup */
+        window.onload = function() {
+            // Set default date input fields to today
+            const today = getTodayISO();
+            if (document.getElementById('input-order-date')) document.getElementById('input-order-date').value = today;
+            if (document.getElementById('input-task-date')) document.getElementById('input-task-date').value = today;
+
+            renderAllViews();
+        };
+    </script>
+</body>
+</html>
